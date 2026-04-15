@@ -1,0 +1,92 @@
+---
+layout: post
+title: "Hermes: building a language learning tool that meets you where you are"
+date: 2026-04-15
+---
+
+Project writeup — NLP / language learning
+Hermes: building a language learning tool that meets you where you are
+
+A personal project combining speech recognition, voice synthesis, bilingual dictionaries, and pronunciation scoring — built around a simple idea: the best time to learn a word is the moment you actually need it.
+The problem with how we learn languages
+
+Most language learning falls into one of two traps. The first is the structured curriculum: a textbook, an app, a course that parcels vocabulary into tidy, teachable units. The vocabulary is logical. The grammar tables are comprehensive. And none of it sticks, because you are learning the word for "umbrella" three weeks before you move to a rainy city, or drilling the subjunctive in an exercise about a fictional family whose problems bear no resemblance to your own.
+
+Decontextualised input is harder to retain. The research on this is not controversial — we remember things better when they are connected to something we care about, to a moment, a place, a need. A language curriculum that decides for you what you should learn next, and when, is fighting against that.
+
+The second trap is the opposite: immersion without structure. You move to a country, you hear the language constantly, you pick things up. But your pronunciation fossilises because nobody corrects it. You learn vocabulary but not its grammar. You develop comprehension faster than production. Feedback is absent, or inconsistent, or comes from a native speaker who is too polite to tell you that you have been mispronouncing a word for six months.
+
+What would actually work is something in between: the freedom to chase the vocabulary and contexts that come up in your real life, combined with structured, specific feedback on pronunciation and grammar at the moment you ask for it. That is the gap Hermes is trying to fill.
+Video suggestion
+
+30-second clip: a real-world scenario — overhearing a conversation, reading a menu, seeing a sign — and the immediate friction of not knowing how to say or understand something. Sets up the "I need this now" feeling the tool is designed for.
+What Hermes is
+
+Hermes is a Telegram bot. There is no app to download, no account to create beyond a Telegram account. You send it a voice note or a text message in one language; it translates it, reads the translation back to you in a voice-cloned audio response, and then makes the word or phrase available for further exploration — dictionary definition in both your language and the target language, etymology, verb conjugations, pronunciation practice, CEFR-graded synonyms, and a running log of your learning history.
+
+The choice of Telegram was deliberate. Most language interaction already happens in a messaging context — you are texting a friend in French, or trying to understand something you just read. A bot that lives inside that interface removes a layer of friction. You do not switch apps. You do not interrupt the flow of what you were doing.
+Translation
+Voice-to-voice, in 18 languages
+Send a voice note. WhisperX transcribes it, Google Translate converts it, XTTS v2 synthesises the output in your voice. Speed presets (0.5× / 1× / 2×) let you slow audio down to catch what was said.
+Dictionary
+Bilingual Wiktionary lookups
+Definitions in both English and the native language, with flag labels. Etymology, usage examples, and one-tap access to full verb conjugation tables across all tenses and persons.
+Pronunciation
+Language-specific scoring
+Wav2Vec2 models per language — French words scored against French phonemes, not English. Pair-based correction tips tell you exactly what your mouth is doing wrong and how to fix it.
+Learning
+Progress tracking over time
+Every lookup and pronunciation attempt is stored. The /stats command surfaces difficult words, weekly trends, and pronunciation scores across sessions.
+Demo GIF suggestion
+
+Screen recording of the full translation loop: sending a voice note in one language, receiving the translated audio, then tapping through to the dictionary entry. Keep it under 15 seconds — the speed of the interaction is the point.
+Why this design encourages real interaction
+
+One thing that structured language apps often inadvertently discourage is actual communication with other people. If you are drilling flashcards, you are not talking to anyone. Hermes is designed to sit alongside human interaction rather than replace it.
+
+The most natural use case is a conversation already in progress. You are speaking with someone in Italian, you hear a phrase you do not know, you send a voice note to Hermes and get the translation back as audio you can replay and mimic. You then ask for the pronunciation score on your attempt. The loop points you back outward — towards the person, the conversation, the context where the word actually lives.
+
+The "Reply in X" feature reinforces this. After a translation, the bot asks if you want it to reply in the target language. This keeps a dialogue going, rather than treating each message as an isolated transaction. It is a small design decision, but it reflects a different assumption about what the tool is for.
+
+The best time to learn a word is the moment you actually need it. Hermes is built around that window — not a scheduled session, not a curated lesson, but the second the gap between what you want to say and what you can say becomes visible.
+How it was built: a brief history
+
+The project started in December 2025 as an audio processing pipeline — denoising, chunking, reconstruction. The early versions had nothing to do with translation; they were about understanding how to handle audio cleanly in Python. ASR came next, then phoneme extraction from Whisper's alignment output.
+
+By late January 2026 the core speech-to-speech pipeline was in place: WhisperX for transcription, Google Translate for the text conversion, XTTS v2 for voice-cloned synthesis. The Telegram bot came shortly after, turning a command-line demo into something usable.
+Dec 2025
+Audio pipeline: denoising, overlap-add reconstruction, ASR wrapper with phoneme timestamps
+Jan 2026
+Voice transformation (WORLD vocoder), full speech-to-speech pipeline, Telegram bot v1
+Feb 1
+Bot release with live translation, Wiktionary dictionary integration, UX polish
+Feb 9
+Learning analytics, pronunciation scoring with Wav2Vec2, SQLite event storage, /stats
+Feb 14
+Verb conjugation tables, plural and comparative forms via word-form buttons
+Feb 19
+Multi-language pronunciation scoring (language-specific models), bilingual dictionary, full performance metrics
+Feb 22
+CI/CD via GitHub Actions (Docker-based), pair-based phoneme correction tips
+GIF suggestion
+
+Side-by-side: the terminal output of the latency breakdown (transcription → translation → synthesis percentages) next to the Telegram bot receiving its response. Shows the engineering underneath the simple interface.
+The pronunciation scoring problem
+
+One of the more technically interesting problems was pronunciation scoring. The first version scored everything against English phonemes — which meant that if you were practising French, your attempt at "bonjour" was being compared against how an English speaker would pronounce those sounds. The scores were not just wrong; they were confidently wrong in a way that would have given a learner bad feedback.
+
+The fix was to route each word to the correct language-specific Wav2Vec2 model. French is now scored with facebook/wav2vec2-large-xlsr-53-french, Spanish with its Spanish counterpart, and so on across 13 languages. IPA extraction uses espeak-ng with the correct language voice. This sounds like an obvious thing to get right, but it required unpicking assumptions baked into the original implementation.
+
+The current unreleased work takes this further with pair-based phoneme correction tips. Rather than telling you "your /v/ was wrong", the system now identifies what you actually said — say, /b/ — and gives you the specific physical instruction for how to move from /b/ to /v/: upper teeth, lower lip, light contact. The tips are also language-aware; the same phoneme substitution in Spanish versus German gets different guidance, because the phonological context is different.
+Video suggestion
+
+Screen recording of a pronunciation attempt — the user recording themselves saying a French word, the score appearing, and the specific correction tip displaying. Ideally showing a before/after: a bad attempt, the tip, a better attempt with an improved score.
+What comes next
+
+The next additions on the list are a "pronunciation" button that surfaces IPA, tongue position guidance, and articulation detail for a word on demand; and a "syntax" button that returns the grammatical role of the word and relevant grammar notes. Both keep to the same principle: information available on demand, anchored to a specific word the user has already chosen to look up, not pushed at them in advance.
+
+The longer-term question is whether the learning analytics can be used to surface patterns — not just "you looked up this word three times" but "you consistently mispronounce fricatives in French" or "you keep reaching for the dictionary on subjunctive constructions". That kind of feedback requires enough usage data to be meaningful, but it is the direction that closes the loop between contextual learning and structured improvement.
+GIF suggestion
+
+The /stats screen: scrolling through the dashboard showing words learned, pronunciation score trends, and a "difficult words" list. Demonstrates that data is accumulating and being put to use.
+The source code is on GitHub at github.com/alexdimmock95. The project is under active development. A video demo is available — link at the top of the README.
