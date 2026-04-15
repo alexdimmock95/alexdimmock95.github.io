@@ -2,4 +2,4 @@
 
 NLP engineer and designer based in London.
 
-[GitHub](https://github.com/alexdimmock95) · [LinkedIn](your-linkedin-url)
+[GitHub](https://github.com/alexdimmock95) · [LinkedIn](https://linkedin.com/in/alex-dimmock-118b00141)
