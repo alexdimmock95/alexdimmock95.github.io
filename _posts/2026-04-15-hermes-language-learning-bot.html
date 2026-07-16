@@ -13,6 +13,7 @@ date: 2026-04-15
   h1{font-family:'Lora',serif;font-size:2rem;font-weight:600;line-height:1.3;margin-bottom:1rem;color:var(--color-text-primary)}
   .standfirst{font-size:1.05rem;color:var(--color-text-secondary);line-height:1.75;margin-bottom:2rem;border-bottom:0.5px solid var(--color-border-tertiary);padding-bottom:2rem}
   h2{font-family:'Lora',serif;font-size:1.3rem;font-weight:600;margin:2.5rem 0 0.8rem;color:var(--color-text-primary)}
+  h3{font-family:'Lora',serif;font-size:1.1rem;font-weight:600;margin:1.5rem 0 0.6rem;color:var(--color-text-primary)}
   p{margin-bottom:1.1rem;font-size:0.97rem;font-weight:300;color:var(--color-text-primary)}
   .media-placeholder{border:0.5px dashed var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:1.4rem 1.2rem;margin:1.6rem 0;background:var(--color-background-secondary);display:flex;align-items:flex-start;gap:12px}
   .media-icon{width:36px;height:36px;border-radius:var(--border-radius-md);background:var(--color-background-info);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
@@ -37,30 +38,23 @@ date: 2026-04-15
 </style>
 
 <div class="post">
-  <span class="tag">Project writeup — NLP / language learning</span>
+  <span class="tag">Project writeup: NLP / language learning</span>
   <h1>Hermes: building a language learning tool that meets you where you are</h1>
-  <p class="standfirst">A personal project combining speech recognition, voice synthesis, bilingual dictionaries, and pronunciation scoring — built around a simple idea: the best time to learn a word is the moment you actually need it.</p>
+  <p class="standfirst">A personal project combining speech recognition, voice synthesis, bilingual dictionaries, and pronunciation scoring. Built around a simple idea: the best time to learn a word is the moment you actually need it.</p>
 
   <h2>The problem with how we learn languages</h2>
   <p>Most language learning falls into one of two traps. The first is the structured curriculum: a textbook, an app, a course that parcels vocabulary into tidy, teachable units. The vocabulary is logical. The grammar tables are comprehensive. And none of it sticks, because you are learning the word for "umbrella" three weeks before you move to a rainy city, or drilling the subjunctive in an exercise about a fictional family whose problems bear no resemblance to your own.</p>
-  <p>Decontextualised input is harder to retain. The research on this is not controversial — we remember things better when they are connected to something we care about, to a moment, a place, a need. A language curriculum that decides for you what you should learn next, and when, is fighting against that.</p>
+  <p>Decontextualised input is harder to retain. The research on this is not controversial. We remember things better when they are connected to something we care about, to a moment, a place, a need. A language curriculum that decides for you what you should learn next, and when, is fighting against that.</p>
   <p>The second trap is the opposite: immersion without structure. You move to a country, you hear the language constantly, you pick things up. But your pronunciation fossilises because nobody corrects it. You learn vocabulary but not its grammar. You develop comprehension faster than production. Feedback is absent, or inconsistent, or comes from a native speaker who is too polite to tell you that you have been mispronouncing a word for six months.</p>
   <p>What would actually work is something in between: the freedom to chase the vocabulary and contexts that come up in your real life, combined with structured, specific feedback on pronunciation and grammar at the moment you ask for it. That is the gap Hermes is trying to fill.</p>
-
-  <div class="media-placeholder">
-    <div class="media-icon"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
-    <div>
-      <div class="media-label">Video suggestion</div>
-      <p class="media-desc">30-second clip: a real-world scenario — overhearing a conversation, reading a menu, seeing a sign — and the immediate friction of not knowing how to say or understand something. Sets up the "I need this now" feeling the tool is designed for.</p>
-    </div>
-  </div>
 
   <hr class="divider">
 
   <h2>What Hermes is</h2>
-  <p>Hermes is a Telegram bot. There is no app to download, no account to create beyond a Telegram account. You send it a voice note or a text message in one language; it translates it, reads the translation back to you in a voice-cloned audio response, and then makes the word or phrase available for further exploration — dictionary definition in both your language and the target language, etymology, verb conjugations, pronunciation practice, CEFR-graded synonyms, and a running log of your learning history.</p>
-  <p>The choice of Telegram was deliberate. Most language interaction already happens in a messaging context — you are texting a friend in French, or trying to understand something you just read. A bot that lives inside that interface removes a layer of friction. You do not switch apps. You do not interrupt the flow of what you were doing.</p>
+  <p>Hermes is a Telegram bot. There is no app to download, no account to create beyond a Telegram account. You send it a voice note or a text message in one language; it translates it, reads the translation back to you in a voice-cloned audio response, and then makes the word or phrase available for further exploration: dictionary definition in both your language and the target language, etymology, verb conjugations, pronunciation practice, CEFR-graded synonyms, and a running log of your learning history.</p>
+  <p>The choice of Telegram was deliberate. Most language interaction already happens in a messaging context. You are texting a friend in French, or trying to understand something you just read. A bot that lives inside that interface removes a layer of friction. You do not switch apps. You do not interrupt the flow of what you were doing.</p>
 
+  <h3>Key features</h3>
   <div class="feature-row">
     <div class="feature-card">
       <div class="fc-label">Translation</div>
@@ -75,7 +69,7 @@ date: 2026-04-15
     <div class="feature-card">
       <div class="fc-label">Pronunciation</div>
       <div class="fc-title">Language-specific scoring</div>
-      <div class="fc-body">Wav2Vec2 models per language — French words scored against French phonemes, not English. Pair-based correction tips tell you exactly what your mouth is doing wrong and how to fix it.</div>
+      <div class="fc-body">Wav2Vec2 models per language. French words scored against French phonemes, not English. Pair-based correction tips tell you exactly what your mouth is doing wrong and how to fix it.</div>
     </div>
     <div class="feature-card">
       <div class="fc-label">Learning</div>
@@ -88,7 +82,7 @@ date: 2026-04-15
     <div class="media-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
     <div>
       <div class="media-label">Demo GIF suggestion</div>
-      <p class="media-desc">Screen recording of the full translation loop: sending a voice note in one language, receiving the translated audio, then tapping through to the dictionary entry. Keep it under 15 seconds — the speed of the interaction is the point.</p>
+      <p class="media-desc">Screen recording of the full translation loop: sending a voice note in one language, receiving the translated audio, then tapping through to the dictionary entry. Keep it under 15 seconds. The speed of the interaction is the point.</p>
     </div>
   </div>
 
@@ -96,15 +90,15 @@ date: 2026-04-15
 
   <h2>Why this design encourages real interaction</h2>
   <p>One thing that structured language apps often inadvertently discourage is actual communication with other people. If you are drilling flashcards, you are not talking to anyone. Hermes is designed to sit alongside human interaction rather than replace it.</p>
-  <p>The most natural use case is a conversation already in progress. You are speaking with someone in Italian, you hear a phrase you do not know, you send a voice note to Hermes and get the translation back as audio you can replay and mimic. You then ask for the pronunciation score on your attempt. The loop points you back outward — towards the person, the conversation, the context where the word actually lives.</p>
+  <p>The most natural use case is a conversation already in progress. You are speaking with someone in Italian, you hear a phrase you do not know, you send a voice note to Hermes and get the translation back as audio you can replay and mimic. You then ask for the pronunciation score on your attempt. The loop points you back outward, towards the person, the conversation, the context where the word actually lives.</p>
   <p>The "Reply in X" feature reinforces this. After a translation, the bot asks if you want it to reply in the target language. This keeps a dialogue going, rather than treating each message as an isolated transaction. It is a small design decision, but it reflects a different assumption about what the tool is for.</p>
 
-  <div class="callout"><p>The best time to learn a word is the moment you actually need it. Hermes is built around that window — not a scheduled session, not a curated lesson, but the second the gap between what you want to say and what you can say becomes visible.</p></div>
+  <div class="callout"><p>The best time to learn a word is the moment you actually need it. Hermes is built around that window: not a scheduled session, not a curated lesson, but the second the gap between what you want to say and what you can say becomes visible.</p></div>
 
   <hr class="divider">
 
   <h2>How it was built: a brief history</h2>
-  <p>The project started in December 2025 as an audio processing pipeline — denoising, chunking, reconstruction. The early versions had nothing to do with translation; they were about understanding how to handle audio cleanly in Python. ASR came next, then phoneme extraction from Whisper's alignment output.</p>
+  <p>The project started in December 2025 as an audio processing pipeline: denoising, chunking, reconstruction. The early versions had nothing to do with translation; they were about understanding how to handle audio cleanly in Python. ASR came next, then phoneme extraction from Whisper's alignment output.</p>
   <p>By late January 2026 the core speech-to-speech pipeline was in place: WhisperX for transcription, Google Translate for the text conversion, XTTS v2 for voice-cloned synthesis. The Telegram bot came shortly after, turning a command-line demo into something usable.</p>
 
   <div class="timeline">
@@ -128,33 +122,17 @@ date: 2026-04-15
   <hr class="divider">
 
   <h2>The pronunciation scoring problem</h2>
-  <p>One of the more technically interesting problems was pronunciation scoring. The first version scored everything against English phonemes — which meant that if you were practising French, your attempt at "bonjour" was being compared against how an English speaker would pronounce those sounds. The scores were not just wrong; they were confidently wrong in a way that would have given a learner bad feedback.</p>
+  <p>One of the more technically interesting problems was pronunciation scoring. The first version scored everything against English phonemes, which meant that if you were practising French, your attempt at "bonjour" was being compared against how an English speaker would pronounce those sounds. The scores were not just wrong; they were confidently wrong in a way that would have given a learner bad feedback.</p>
   <p>The fix was to route each word to the correct language-specific Wav2Vec2 model. French is now scored with <code>facebook/wav2vec2-large-xlsr-53-french</code>, Spanish with its Spanish counterpart, and so on across 13 languages. IPA extraction uses espeak-ng with the correct language voice. This sounds like an obvious thing to get right, but it required unpicking assumptions baked into the original implementation.</p>
-  <p>The current unreleased work takes this further with pair-based phoneme correction tips. Rather than telling you "your /v/ was wrong", the system now identifies what you actually said — say, /b/ — and gives you the specific physical instruction for how to move from /b/ to /v/: upper teeth, lower lip, light contact. The tips are also language-aware; the same phoneme substitution in Spanish versus German gets different guidance, because the phonological context is different.</p>
-
-  <div class="media-placeholder">
-    <div class="media-icon"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
-    <div>
-      <div class="media-label">Video suggestion</div>
-      <p class="media-desc">Screen recording of a pronunciation attempt — the user recording themselves saying a French word, the score appearing, and the specific correction tip displaying. Ideally showing a before/after: a bad attempt, the tip, a better attempt with an improved score.</p>
-    </div>
-  </div>
+  <p>The current unreleased work takes this further with pair-based phoneme correction tips. Rather than telling you "your /v/ was wrong", the system now identifies what you actually said, say /b/, and gives you the specific physical instruction for how to move from /b/ to /v/: upper teeth, lower lip, light contact. The tips are also language-aware; the same phoneme substitution in Spanish versus German gets different guidance, because the phonological context is different.</p>
 
   <hr class="divider">
 
   <h2>What comes next</h2>
   <p>The next additions on the list are a "pronunciation" button that surfaces IPA, tongue position guidance, and articulation detail for a word on demand; and a "syntax" button that returns the grammatical role of the word and relevant grammar notes. Both keep to the same principle: information available on demand, anchored to a specific word the user has already chosen to look up, not pushed at them in advance.</p>
-  <p>The longer-term question is whether the learning analytics can be used to surface patterns — not just "you looked up this word three times" but "you consistently mispronounce fricatives in French" or "you keep reaching for the dictionary on subjunctive constructions". That kind of feedback requires enough usage data to be meaningful, but it is the direction that closes the loop between contextual learning and structured improvement.</p>
-
-  <div class="media-placeholder">
-    <div class="media-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
-    <div>
-      <div class="media-label">GIF suggestion</div>
-      <p class="media-desc">The /stats screen: scrolling through the dashboard showing words learned, pronunciation score trends, and a "difficult words" list. Demonstrates that data is accumulating and being put to use.</p>
-    </div>
-  </div>
+  <p>The longer-term question is whether the learning analytics can be used to surface patterns, not just "you looked up this word three times" but "you consistently mispronounce fricatives in French" or "you keep reaching for the dictionary on subjunctive constructions". That kind of feedback requires enough usage data to be meaningful, but it is the direction that closes the loop between contextual learning and structured improvement.</p>
 
   <div class="author-note">
-    The source code is on GitHub at <strong>github.com/alexdimmock95</strong>. The project is under active development. A video demo is available — link at the top of the README.
+    The source code is on GitHub at <strong>github.com/alexdimmock95</strong>. The project is under active development. A video demo is available: link at the top of the README.
   </div>
 </div>
