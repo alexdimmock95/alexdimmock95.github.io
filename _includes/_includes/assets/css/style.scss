@@ -2,25 +2,6 @@
 ---
 @import "minima";
 
-.sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 180px;
-  padding: 2rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  border-right: 1px solid #eee;
-}
-
-.sidebar a {
-  text-decoration: none;
-  font-size: 0.9rem;
-  color: #333;
-}
-
-.sidebar a:hover {
-  color: #000;
+.post-list .post-link {
+  font-size: 1rem; /* matches body text */
 }
