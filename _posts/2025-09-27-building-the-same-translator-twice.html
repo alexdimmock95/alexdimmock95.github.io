@@ -169,10 +169,6 @@ The other was Luong, Pham and Manning's "Effective Approaches to Attention-based
 Reading both before building anything gave me a clearer sense of what problem attention was solving, and why it mattered enough to bother implementing.
 </p>
 
-
-<hr class="divider">
-
-
 <h2>Why build something I knew I would replace?</h2>
 
 <p>
@@ -182,13 +178,6 @@ I started this project with an LSTM, not because I thought it was the best tool 
 <p>
 That decision turned out to be worth it, even though the LSTM itself never produced anything I'd call good.
 </p>
-
-<div class="callout">
-<p>
-Understanding why a model fails can teach more than watching a stronger model succeed.
-</p>
-</div>
-
 
 <h2>The LSTM experiments</h2>
 
@@ -207,28 +196,6 @@ After that I went back and commented every line, mostly for my own benefit, so I
 <p>
 That step alone taught me more than the training runs did.
 </p>
-
-
-<div class="media-placeholder">
-
-<div class="media-icon">
-<svg viewBox="0 0 24 24">
-<rect x="3" y="4" width="18" height="16" rx="2"/>
-<line x1="7" y1="8" x2="17" y2="8"/>
-<line x1="7" y1="12" x2="17" y2="12"/>
-<line x1="7" y1="16" x2="13" y2="16"/>
-</svg>
-</div>
-
-<div>
-<div class="media-label">Visual suggestion</div>
-<p class="media-desc">
-Diagram showing the encoder-decoder LSTM pipeline: input sentence → encoder hidden states → attention layer → decoder output sequence.
-</p>
-</div>
-
-</div>
-
 
 <hr class="divider">
 
@@ -261,10 +228,6 @@ Understandable, but not something you'd trust for anything real.
 <p>
 That was expected. Recurrent architectures trained from scratch on a modest dataset are never going to compete with something that has already seen millions of sentence pairs.
 </p>
-
-
-<hr class="divider">
-
 
 <h2>Rebuilding with a Transformer</h2>
 
@@ -302,16 +265,8 @@ The LSTM wasn't wasted effort even though I abandoned it.
 Watching where it struggled — tokenisation choices, attention mechanisms, latent dimension size — gave me a much clearer sense of what the Transformer was doing better and why.
 </p>
 
-<div class="callout">
 <p>
-If I'd started with the pretrained model straight away, I don't think I'd have appreciated the improvement anywhere near as much.
+This project was an exercise in understanding the foundations of modern NLP systems: not just using a Transformer, but understanding the problems it was designed to solve. If I'd started with the pretrained model straight away, I don't think I'd have appreciated the improvement anywhere near as much.
 </p>
-</div>
-
-
-<div class="author-note">
-This project was an exercise in understanding the foundations of modern NLP systems: not just using a Transformer, but understanding the problems it was designed to solve.
-</div>
-
 
 </div>
