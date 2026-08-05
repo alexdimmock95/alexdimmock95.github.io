@@ -38,25 +38,25 @@ date: 2025-05-25
   <p><strong>Pitch</strong> — the perceived frequency of the voice. Higher pitch can read as excitement or nerves, lower as calm or authority; a stable pitch line tends to track with confidence and clarity.</p>
   <p><strong>Intensity</strong> — how loud the voice is. Higher intensity signals enthusiasm or urgency, lower can suggest hesitation. Consistency here is usually a better signal than the raw level.</p>
   <p><strong>Jitter</strong> — small, rapid cycle-to-cycle variation in pitch. Healthy voices keep this low; it climbs with strain, tension, or fatigue.</p>
-  <p><strong>Shimmer</strong> — the same idea applied to loudness rather than pitch. High shimmer often points to breathiness or reduced vocal control.</p>
+  <p><strong>Shimmer</strong> — the same idea applied to intensity rather than pitch. High shimmer often points to breathiness or reduced vocal control.</p>
   <p>Alongside these, the app flags filler words and long pauses — not to police them, but to make patterns visible: do the "um"s cluster around moments of reaching for an idea, or are the pauses more likely deliberate emphasis?</p>
 
   <h2>The pipeline</h2>
-  <p>Upload a WAV file and Whisper transcribes it. Praat-Parselmouth extracts pitch, intensity, jitter and shimmer, plotted against time. On top of the raw numbers sit plain-language labels — a nudge toward "what does this actually mean for how I sound," not just a chart.</p>
+  <p>Upload or record a WAV file and Whisper transcribes it. Praat-Parselmouth extracts pitch, intensity, jitter and shimmer, plotted against time. On top of the raw numbers sit plain-language labels — a nudge toward "what does this actually mean for how I sound," not just a chart.</p>
 
   <div class="media-row">
-    <div class="media-placeholder">Screenshot: pitch and jitter plot</div>
-    <div class="media-placeholder">Screenshot: filler word / pause detection</div>
+    <div class="media-placeholder"><img src="/assets/speech_analyser_post/screenshot_01.png" alt="Analysis results for intensity" style="max-width:100%;border-radius:8px"></div>
+    <div class="media-placeholder"><img src="/assets/speech_analyser_post/screenshot_02.png" alt="Analysis results for intensity" style="max-width:100%;border-radius:8px"></div>
   </div>
 
   <h2>The harder layer: phoneme alignment</h2>
   <p>The interesting extension is Montreal Forced Aligner, which aligns the transcript to the audio at the phoneme level rather than the word level. That's what makes filler-word and pause detection precise instead of approximate. MFA's dependencies are heavy enough that it runs in its own conda environment, called from the app via subprocess — which keeps the main deployment light enough for Streamlit Cloud, where MFA itself can't run.</p>
 
-  <div class="callout">Cloud demo runs the Whisper + Praat layer only. Phoneme alignment is local-only for now — the next step is probably a lighter, wav2vec2-based aligner that doesn't need MFA's 2GB+ models at all.</div>
+  <p>Cloud demo runs the Whisper + Praat layer only. Phoneme alignment is local-only for now — the next step is probably a lighter, wav2vec2-based aligner that doesn't need MFA's 2GB+ models at all.</p>
 
   <h2>What's next</h2>
   <p>Time-localised feedback is the priority — right now a label like "high jitter" applies to the whole recording, even if the issue is really just ten seconds in the middle. Multi-language support is the other direction I want to take it, since Whisper already supports it and it connects directly to the language side of my own background.</p>
 
   <hr class="divider">
-  <p><em>Code on <a href="https://github.com/alexdimmock95/speech-analyser">GitHub</a>. Live demo: <a href="https://speech-analyser.streamlit.app/">speech-analyser.streamlit.app</a>.</em></p>
+  <p><em>Code on <a href="https://github.com/alexdimmock95/speech-analyser">GitHub</a>.</em></p>
 </div>
