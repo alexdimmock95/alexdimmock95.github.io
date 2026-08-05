@@ -1,0 +1,62 @@
+---
+layout: post
+title: "Building a Speech Analyser: From Waveform to Feedback"
+date: 2025-05-25
+---
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Lora',serif;color:#000;background:transparent;line-height:1.7}
+  .post{max-width:720px;margin:0 auto;padding:2rem 1.5rem 4rem}
+  .tag{display:inline-block;font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;border:1px solid #000;padding:4px 10px;border-radius:20px;margin-bottom:1.2rem}
+  h1{font-size:2rem;font-weight:600;line-height:1.3;margin-bottom:1rem}
+  .standfirst{font-size:1.05rem;line-height:1.75;margin-bottom:2rem;border-bottom:1px solid #000;padding-bottom:2rem}
+  h2{font-size:1.3rem;font-weight:600;margin:2.5rem 0 0.8rem}
+  p{margin-bottom:1.1rem;font-size:0.97rem}
+  .media-placeholder{border:1px dashed #000;border-radius:8px;padding:1.4rem 1.2rem;margin:1.6rem 0;text-align:center;font-size:0.9rem}
+  .media-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:1.6rem 0}
+  .callout{border-left:3px solid #000;padding:1rem 1.2rem;margin:1.6rem 0}
+  .divider{border:none;border-top:1px solid #000;margin:2.5rem 0}
+  @media(max-width:520px){.media-row{grid-template-columns:1fr}.post{padding:1.5rem 1rem 3rem}h1{font-size:1.55rem}}
+</style>
+
+<div class="post">
+  <span class="tag">Project writeup: speech tech / NLP</span>
+  <h1>Building a Speech Analyser: From Waveform to Feedback</h1>
+
+  <p class="standfirst">A Streamlit app that takes a recorded voice, transcribes it with Whisper, and turns it into coaching-style feedback — pitch, intensity, jitter, shimmer, filler words, pauses. Built to sharpen my speech AI skills and to have something concrete to point to while moving from design into NLP.</p>
+
+  <div class="media-placeholder">Screenshot: intensity plot over time</div>
+
+  <h2>Why this project</h2>
+  <p>I wanted a project that touched the full pipeline a speech engineer actually works with: audio in, transcription, acoustic feature extraction, and some kind of usable output at the end. Not a toy notebook — something deployed, with a live demo, that a language learner or public speaker could genuinely use.</p>
+
+  <p>The underlying intention is training to speak with confidence. Day to day, we speak with ums, ahs, pauses and hesitations. Turning that uncertainty into definitive, measured instances, draws attention to where we can speak more clearly and with more purpose, perfect for language learners or public speakers.</p>
+
+  <h2>The voice qualities it measures</h2>
+  <p><strong>Pitch</strong> — the perceived frequency of the voice. Higher pitch can read as excitement or nerves, lower as calm or authority; a stable pitch line tends to track with confidence and clarity.</p>
+  <p><strong>Intensity</strong> — how loud the voice is. Higher intensity signals enthusiasm or urgency, lower can suggest hesitation. Consistency here is usually a better signal than the raw level.</p>
+  <p><strong>Jitter</strong> — small, rapid cycle-to-cycle variation in pitch. Healthy voices keep this low; it climbs with strain, tension, or fatigue.</p>
+  <p><strong>Shimmer</strong> — the same idea applied to loudness rather than pitch. High shimmer often points to breathiness or reduced vocal control.</p>
+  <p>Alongside these, the app flags filler words and long pauses — not to police them, but to make patterns visible: do the "um"s cluster around moments of reaching for an idea, or are the pauses more likely deliberate emphasis?</p>
+
+  <h2>The pipeline</h2>
+  <p>Upload a WAV file and Whisper transcribes it. Praat-Parselmouth extracts pitch, intensity, jitter and shimmer, plotted against time. On top of the raw numbers sit plain-language labels — a nudge toward "what does this actually mean for how I sound," not just a chart.</p>
+
+  <div class="media-row">
+    <div class="media-placeholder">Screenshot: pitch and jitter plot</div>
+    <div class="media-placeholder">Screenshot: filler word / pause detection</div>
+  </div>
+
+  <h2>The harder layer: phoneme alignment</h2>
+  <p>The interesting extension is Montreal Forced Aligner, which aligns the transcript to the audio at the phoneme level rather than the word level. That's what makes filler-word and pause detection precise instead of approximate. MFA's dependencies are heavy enough that it runs in its own conda environment, called from the app via subprocess — which keeps the main deployment light enough for Streamlit Cloud, where MFA itself can't run.</p>
+
+  <div class="callout">Cloud demo runs the Whisper + Praat layer only. Phoneme alignment is local-only for now — the next step is probably a lighter, wav2vec2-based aligner that doesn't need MFA's 2GB+ models at all.</div>
+
+  <h2>What's next</h2>
+  <p>Time-localised feedback is the priority — right now a label like "high jitter" applies to the whole recording, even if the issue is really just ten seconds in the middle. Multi-language support is the other direction I want to take it, since Whisper already supports it and it connects directly to the language side of my own background.</p>
+
+  <hr class="divider">
+  <p><em>Code on <a href="https://github.com/alexdimmock95/speech-analyser">GitHub</a>. Live demo: <a href="https://speech-analyser.streamlit.app/">speech-analyser.streamlit.app</a>.</em></p>
+</div>
