@@ -1,0 +1,62 @@
+---
+layout: post
+title: "How Much Data Does a Language Need? A Basque ASR Experiment"
+date: 2026-08-16
+---
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Lora',serif;color:#000;background:transparent;line-height:1.7}
+  .post{max-width:720px;margin:0 auto;padding:2rem 1.5rem 4rem}
+  .tag{display:inline-block;font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;border:1px solid #000;padding:4px 10px;border-radius:20px;margin-bottom:1.2rem}
+  h1{font-size:2rem;font-weight:600;line-height:1.3;margin-bottom:1rem}
+  .standfirst{font-size:1.05rem;line-height:1.75;margin-bottom:2rem;border-bottom:1px solid #000;padding-bottom:2rem}
+  h2{font-size:1.3rem;font-weight:600;margin:2.5rem 0 0.8rem}
+  p{margin-bottom:1.1rem;font-size:0.97rem}
+  .media-placeholder{border:1px dashed #000;border-radius:8px;padding:1.4rem 1.2rem;margin:1.6rem 0;text-align:center;font-size:0.9rem;display:flex;flex-direction:column;justify-content:flex-end}
+  .media-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:1.6rem 0}
+  .callout{border-left:3px solid #000;padding:1rem 1.2rem;margin:1.6rem 0}
+  .divider{border:none;border-top:1px solid #000;margin:2.5rem 0}
+  @media(max-width:520px){.media-row{grid-template-columns:1fr}.post{padding:1.5rem 1rem 3rem}h1{font-size:1.55rem}}
+</style>
+
+<div class="post">
+  <span class="tag">Project writeup: speech tech / NLP</span>
+  <h1>How Much Data Does a Language Need? A Basque ASR Experiment</h1>
+
+  <p class="standfirst">Fine-tuning Wav2Vec2 on Basque, four times over, at increasing amounts of training data — to get an actual answer to a question I kept assuming rather than testing: how much audio does it take before a speech model starts working properly?</p>
+
+  <div class="media-placeholder">Screenshot: WER vs training hours curve</div>
+
+  <h2>Why Basque</h2>
+  <p>Most speech and language models are trained overwhelmingly on English and a handful of other high-resource languages. Everything else — the majority of languages spoken in the world — gets a worse version of these tools, if it gets one at all. That gap is the real motivation here: making quality AI tooling less dependent on which language you happen to speak.</p>
+
+  <p>Basque was the practical test case — it has a solid public dataset (<code>HiTZ/composite_corpus_eu_v2.1</code>) and sits well outside the usual high-resource set, without being so scarce that I couldn't get a baseline at all. Worth being precise here: Basque itself isn't an endangered language, it has institutional backing in Spain and France. But the same low-resource techniques are exactly what's needed for languages that genuinely are dying out — and the artefact that gets left behind, a structured corpus of transcribed, aligned speech, is a form of documentation in its own right, separate from whatever the model itself achieves.</p>
+
+  <h2>The question: how much data is enough?</h2>
+  <p>Rather than assume a number, I fine-tuned <code>facebook/wav2vec2-large-xlsr-53</code> on four increasing slices of the corpus — 10, 50, 100 hours, and the full dataset — and tracked how error rate moved at each step. The point isn't just "more data is better" (obviously true) but where the curve bends: is there a threshold past which extra hours stop paying off, and is that threshold something a team could plan a data collection budget around?</p>
+
+  <h2>Measuring it: Word Error Rate</h2>
+  <p>The standard metric for ASR quality is Word Error Rate (WER) — substitutions, insertions and deletions between the predicted transcript and the reference, divided by the number of words in the reference. Lower is better; 0% is a perfect transcript.</p>
+
+  <p>It sounds simple but is easy to get subtly wrong. Both the prediction and the ground truth need identical normalisation before comparison — same casing, same punctuation handling, same treatment of diacritics — or you end up scoring genuine mismatches in text formatting as if they were transcription errors. Getting that normalisation step consistent across all four runs was its own small piece of work, not just a detail to skip past.</p>
+
+  <div class="media-row">
+    <div class="media-placeholder">Screenshot: W&amp;B training run comparison</div>
+    <div class="media-placeholder">Screenshot: WER by training condition</div>
+  </div>
+
+  <h2>Difficulties along the way</h2>
+  <p>Training on Kaggle's free T4 GPU meant working within a real compute allowance rather than assuming unlimited resources — batch size 2, bf16 mixed precision, 5 epochs, all chosen to fit the constraint rather than for their own sake. That's a legitimate part of the story: low-resource language work is usually also low-resource <em>compute</em> work, and the two constraints shape each other.</p>
+
+  <p>The 100-hour run has been the difficult one — it stalls after epoch 1, which I haven't fully diagnosed yet. Earlier problems included a PyArrow int32 overflow when writing large Parquet files (fixed by writing in chunks), and running out of disk space entirely (fixed with float16 casting and deleting intermediate Parquet files immediately after use). None of these are exotic ML problems — they're the unglamorous infrastructure issues that low-resource, low-compute training actually spends most of its time on.</p>
+
+  <div class="callout">Two runs (10h, 50h) are complete and show a clear WER improvement. The 100h run is the current blocker — once it's stable, the full-dataset run will complete the curve and give an actual answer to "how much is enough."</div>
+
+  <h2>What's next</h2>
+  <p>Once all four points are in, the real output is the curve itself — a concrete answer, for this language and this model, to a question usually treated as folklore ("just get more data"). That's directly reusable for anyone approaching a genuinely endangered language with a much smaller possible dataset than Basque's.</p>
+
+  <hr class="divider">
+  <p><em>Models on <a href="https://huggingface.co/alexdimmock">HuggingFace</a>, training tracked on W&amp;B.</em></p>
+</div>

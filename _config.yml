@@ -5,6 +5,8 @@ theme: minima
 header_pages:
   - about.md
   - cv.md
+  - linkedin.md
+  - github.md
 
 minima:
   social_links:
